@@ -1,0 +1,32 @@
+# 作業用ディレクトリへ行く
+    cd /path/to/project
+
+# AlexNetのモデルファイルとpre-trainedパラメータ(*.caffemodel)のダウンロード
+    $CAFFE_ROOT/scripts/download_model_binary.py $CAFFE_ROOT/models/bvlc_alexnet
+    cp $CAFFE_ROOT/models/bvlc_alexnet/deploy.prototxt ./alexnet_deploy.prototxt
+    cp $CAFFE_ROOT/models/bvlc_alexnet/bvlc_alexnet.caffemodel ./alexnet.caffemodel
+
+# GoogLeNetのモデルファイルとpre-trainedパラメータ(*.caffemodel)のダウンロード
+    $CAFFE_ROOT/scripts/download_model_binary.py $CAFFE_ROOT/models/bvlc_googlenet
+    cp $CAFFE_ROOT/models/bvlc_googlenet/deploy.prototxt ./googlenet_deploy.prototxt
+    cp $CAFFE_ROOT/models/bvlc_googlenet/bvlc_googlenet.caffemodel ./googlenet.caffemodel
+
+# VGG(16 layers)のモデルファイルとpre-trainedパラメータ(*.caffemodel)のダウンロード
+    $CAFFEMODEL/scripts/download_model_from_gist.sh 211839e770f7b538e2d8 $CAFFE_ROOT/models
+    mv 211839e770f7b538e2d8 VGG_ILSVRC_16_layers
+    cd $CAFFE_ROOT/models/VGG_ILSVRC_16_layers/
+    wget http://www.robots.ox.ac.uk/%7Evgg/software/very_deep/caffe/VGG_ILSVRC_16_layers.caffemodel
+    cp /path/to/project
+    cp $CAFFE_ROOT/models/VGG_ILSVRC_16_layers/VGG_ILSVRC_16_layers_deploy.prototxt vgg16_deploy.prototxt 
+    cp $CAFFE_ROOT/models/VGG_ILSVRC_16_layers/VGG_ILSVRC_16_layers.caffemodel vgg16.caffemodel
+
+# imagenet_mean.binaryprotoのダウンロード
+    $CAFFE_ROOT/data/ilsvrc12/get_ilsvrc_aux.sh
+    cp $CAFFE_ROOT/data/ilsvrc12/imagenet_mean.binaryproto .
+    python convert_to_imagenet_mean_npy.py
+
+# AlexNetからの特徴量抽出
+    python convert_images_to_leveldb.py
+    python feature_extract.py
+
+
