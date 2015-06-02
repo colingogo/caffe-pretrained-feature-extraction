@@ -25,8 +25,10 @@
     cp $CAFFE_ROOT/data/ilsvrc12/imagenet_mean.binaryproto .
     python convert_to_imagenet_mean_npy.py
 
+# train.txt, test.txtを作成する
+
 # AlexNetからの特徴量抽出
-    python convert_images_to_leveldb.py
     python feature_extract.py
+    python svm.py
 
 
