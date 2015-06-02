@@ -8,7 +8,7 @@ from sklearn.cross_validation import cross_val_score
 
 def run(model_name):
     # 訓練データ読み込み
-    print "==> loading train data"
+    print "==> loading train data from %s" % (model_name + "_train_(features|labels).hkl")
     train_features = hkl.load(model_name + "_train_features.hkl")
     train_labels = hkl.load(model_name + "_train_labels.hkl")
     print "train_features.shape =", train_features.shape
@@ -17,15 +17,15 @@ def run(model_name):
     svm = LinearSVC(C=1.0)
     
     # print "==> training and test"
-    # test_features = test_features[-1000:]
-    # test_labels = test_labels[-1000:]
-    # train_features = train_features[:-1000]
-    # train_labels= train_labels[:-1000]
-    # svm.fit(train_features, train_labels)
-    # predicted_labels = svm.predict(test_features)
-    # print confusion_matrix(test_labels, predicted_labels)
-    # print accuracy_score(test_labels, predicted_labels)
-    # print classification_report(test_labels, predicted_labels)
+    # X_train = train_features[-1000:]
+    # T_train = train_labels[-1000:]
+    # X_test = train_features[:-1000]
+    # T_test = train_labels[:-1000]
+    # svm.fit(X_train, T_train)
+    # Y_test = svm.predict(X_test)
+    # print confusion_matrix(T_test, Y_test)
+    # print accuracy_score(T_test, Y_test)
+    # print classification_report(T_test, Y_test)
     
     # 10分割交差検定
     print "==> cross validation"
@@ -36,7 +36,7 @@ def run(model_name):
     svm.fit(train_features, train_labels)
     
     # テストデータ読み込み
-    print "==> loading test data"
+    print "==> loading test data from %s" % (model_name + "_test_(features|labels).hkl")
     test_features = hkl.load(model_name + "_test_features.hkl")
     
     # 予測結果をCSVに書き込む
