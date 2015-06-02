@@ -6,11 +6,11 @@ from sklearn.svm import LinearSVC
 from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
 from sklearn.cross_validation import cross_val_score
 
-if __name__ == "__main__":
+def run(model_name):
     # 訓練データ読み込み
     print "==> loading train data"
-    train_features = hkl.load("alexnet_train_features.hkl")
-    train_labels = hkl.load("alexnet_train_labels.hkl")
+    train_features = hkl.load(model_name + "_train_features.hkl")
+    train_labels = hkl.load(model_name + "_train_labels.hkl")
     print "train_features.shape =", train_features.shape
     print "train_labels.shape =", train_labels.shape
 
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     
     # テストデータ読み込み
     print "==> loading test data"
-    test_features = hkl.load("alexnet_test_features.hkl")
+    test_features = hkl.load(model_name + "_test_features.hkl")
     
     # 予測結果をCSVに書き込む
     print "==> predicting and writing"
@@ -52,8 +52,12 @@ if __name__ == "__main__":
         image_id = int(image_id)
         image_ids.append(image_id)
     assert len(image_ids) == len(predicted_labels)
-    with open("predict.txt", "w") as fw:
+    with open(model_name + "_predict.txt", "w") as fw:
         fw.write("id,label\n")
         for i in xrange(len(image_ids)):
             fw.write("%d,%d\n" % (image_ids[i], predicted_labels[i]))
         
+if __name__ == "__main__":
+    #run("alexnet")
+    run("vgg16")
+    #run("googlenet")

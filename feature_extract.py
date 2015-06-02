@@ -3,6 +3,7 @@
 import numpy as np
 import caffe
 import hickle as hkl
+import cv2
 
 class AlexNet:
     def __init__(self, model_path, pretrained_path, meanfile_path):
@@ -50,21 +51,20 @@ class VGG16:
             self.mean = [103,939, 116.779, 123.68]
         else:
             self.mean = mean
-        self.img_dim = 256
+        self.img_size = 256
         self.crop_size = 224
  
-    def preprocess(img):
+    def preprocess(self, img):
         """
         expect img.shape = HxWxC and colors = RGB
         """  
-        # RGB => BGR to use opencv functions
-        img = img[:,:,::-1]
         # resize
-        if img.shape[0] < img.shape[1]:
-            dsize = (int(np.floor(float(self.img_dim)*img.shape[1]/img.shape[0])), self.img_dim)
-        else:
-            dsize = (img_dim, int(np.floor(float(img_dim)*img.shape[0]/img.shape[1])))
-        img = cv2.resize(img, dsize, interpolation=cv2.INTER_CUBIC)
+        # if img.shape[0] < img.shape[1]:
+        #     dsize = (int(np.floor(float(self.img_size)*img.shape[1]/img.shape[0])), self.img_size)
+        # else:
+        #     dsize = (img_size, int(np.floor(float(img_size)*img.shape[0]/img.shape[1])))
+        # img = cv2.resize(img, dsize, interpolation=cv2.INTER_CUBIC)
+        img = cv2.resize(img, (self.img_size, self.img_size), interpolation=cv2.INTER_CUBIC)
         assert img.shape == (self.img_size, self.img_size, 3)
         # convert to float32 
         img = img.astype("float32", copy=False)
@@ -75,7 +75,7 @@ class VGG16:
         assert img.shape == (self.crop_size, self.crop_size, 3)
         # subtract mean
         for c in xrange(3):
-            img[:,:,c] = img[:,:,c] - mean[c]
+            img[:,:,c] = img[:,:,c] - self.mean[c]
         # reorder axis
         img = np.rollaxis(img, 2, 0)
         assert img.shape == (3, self.crop_size, self.crop_size)
@@ -144,6 +144,6 @@ def run_googlenet():
     create_dataset(net=googlenet, datalist="test.txt", dbprefix="googlenet_test")
 
 if __name__ == "__main__":
-    run_alexnet()
-    #run_vgg16()
+    #run_alexnet()
+    run_vgg16()
     #run_googlenet()

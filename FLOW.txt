@@ -27,8 +27,10 @@
 
 # train.txt, test.txtを作成する
 
-# AlexNetからの特徴量抽出
+# AlexNet, VGG(16 layers), GoogLeNetで特徴量抽出
     python feature_extract.py
-    python svm.py
+
+# 各特徴量で学習, 交差検定, 予測
+    python train_test_predict.py
 
 
