@@ -58,6 +58,6 @@ def run(model_name):
             fw.write("%d,%d\n" % (image_ids[i], predicted_labels[i]))
         
 if __name__ == "__main__":
-    #run("alexnet")
+    run("alexnet")
     run("vgg16")
-    #run("googlenet")
+    run("googlenet")
