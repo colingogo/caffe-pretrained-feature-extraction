@@ -5,6 +5,9 @@
     $CAFFE_ROOT/scripts/download_model_binary.py $CAFFE_ROOT/models/bvlc_alexnet
     cp $CAFFE_ROOT/models/bvlc_alexnet/deploy.prototxt ./alexnet_deploy.prototxt
     cp $CAFFE_ROOT/models/bvlc_alexnet/bvlc_alexnet.caffemodel ./alexnet.caffemodel
+    $CAFFE_ROOT/data/ilsvrc12/get_ilsvrc_aux.sh
+    cp $CAFFE_ROOT/data/ilsvrc12/imagenet_mean.binaryproto .
+    python convert_to_imagenet_mean_npy.py
 
 # GoogLeNetのモデルファイルとpre-trainedパラメータ(*.caffemodel)のダウンロード
     $CAFFE_ROOT/scripts/download_model_binary.py $CAFFE_ROOT/models/bvlc_googlenet
@@ -20,11 +23,6 @@
     cp $CAFFE_ROOT/models/VGG_ILSVRC_16_layers/VGG_ILSVRC_16_layers_deploy.prototxt vgg16_deploy.prototxt 
     cp $CAFFE_ROOT/models/VGG_ILSVRC_16_layers/VGG_ILSVRC_16_layers.caffemodel vgg16.caffemodel
 
-# imagenet_mean.binaryprotoのダウンロード
-    $CAFFE_ROOT/data/ilsvrc12/get_ilsvrc_aux.sh
-    cp $CAFFE_ROOT/data/ilsvrc12/imagenet_mean.binaryproto .
-    python convert_to_imagenet_mean_npy.py
-
 # train.txt, test.txtを作成する
 
 # AlexNet, VGG(16 layers), GoogLeNetで特徴量抽出
@@ -32,5 +30,3 @@
 
 # 各特徴量で学習, 交差検定, 予測
     python train_test_predict.py
-
-
