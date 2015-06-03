@@ -51,6 +51,7 @@ python google_process_features.py
 
 - Train linear SVM, and report prediction on test data
 ```
+python train_test_predict.py
 cat alexnet_predict.txt
 id,label
 123,0
