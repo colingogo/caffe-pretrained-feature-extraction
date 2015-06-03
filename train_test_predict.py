@@ -59,5 +59,6 @@ def run(model_name):
         
 if __name__ == "__main__":
     run("alexnet")
-    run("vgg16")
+    run("vgg16_fc7")
+    run("vgg16_fc6")
     run("googlenet")

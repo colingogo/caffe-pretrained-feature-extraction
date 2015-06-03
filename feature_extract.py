@@ -6,7 +6,7 @@ import hickle as hkl
 import cv2
 
 class FeatExtractor:
-    def __init__(self, model_path, pretrain_path, blob, crop_size, meanfile_path=None, mean_values=None):
+    def __init__(self, model_path, pretrained_path, blob, crop_size, meanfile_path=None, mean_values=None):
         caffe.set_mode_gpu()
         self.model_path = model_path
         self.pretrained_path = pretrained_path
@@ -43,7 +43,7 @@ class FeatExtractor:
     def extract_feature(self, img):
         preprocessed_img = self.transformer.preprocess("data", img)
         out = self.net.forward_all(**{self.net.inputs[0]: preprocessed_img, "blobs": [self.blob]})
-        feat = out[blob]
+        feat = out[self.blob]
         feat = feat[0] 
         return feat
 
@@ -91,7 +91,7 @@ def run_alexnet():
     create_dataset(net=alexnet, datalist="train.txt", dbprefix="alexnet_train")
     create_dataset(net=alexnet, datalist="test.txt", dbprefix="alexnet_test")
 
-def run_vgg16():
+def run_vgg16_fc7():
     vgg16 = FeatExtractor(
             model_path="vgg16_deploy.prototxt",
             pretrained_path="vgg16.caffemodel",
@@ -99,8 +99,19 @@ def run_vgg16():
             crop_size=224,
             mean_values=[103.939, 116.779, 123.68]
             )
-    create_dataset(net=vgg16, datalist="train.txt", dbprefix="vgg16_train")
-    create_dataset(net=vgg16, datalist="test.txt", dbprefix="vgg16_test")
+    create_dataset(net=vgg16, datalist="train.txt", dbprefix="vgg16_fc7_train")
+    create_dataset(net=vgg16, datalist="test.txt", dbprefix="vgg16_fc_7test")
+
+def run_vgg16_fc6():
+    vgg16 = FeatExtractor(
+            model_path="vgg16_deploy.prototxt",
+            pretrained_path="vgg16.caffemodel",
+            blob="fc6",
+            crop_size=224,
+            mean_values=[103.939, 116.779, 123.68]
+            )
+    create_dataset(net=vgg16, datalist="train.txt", dbprefix="vgg16_fc6_train")
+    create_dataset(net=vgg16, datalist="test.txt", dbprefix="vgg16_fc6_test")
 
 def run_googlenet():
     googlenet = FeatExtractor(
@@ -115,5 +126,6 @@ def run_googlenet():
 
 if __name__ == "__main__":
     run_alexnet()
-    run_vgg16()
+    run_vgg16_fc7()
+    run_vgg16_fc6()
     run_googlenet()
