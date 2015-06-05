@@ -45,7 +45,7 @@ cat test.txt
 
 - Extract feature vectors from AlexNet(fc6), VGG(fc7, fc6), GoogLeNet(pool5/7x7_s1) and dump to hickle files
 ```
-python feature_extrac.py
+python example.py
 python google_process_features.py
 ```
 

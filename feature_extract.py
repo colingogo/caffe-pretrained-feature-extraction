@@ -5,7 +5,7 @@ import caffe
 import hickle as hkl
 import cv2
 
-class FeatExtractor:
+class CaffeFeatureExtractor:
     def __init__(self, model_path, pretrained_path, blob, crop_size, meanfile_path=None, mean_values=None):
         caffe.set_mode_gpu()
         self.model_path = model_path
@@ -79,53 +79,3 @@ def create_dataset(net, datalist, dbprefix):
     labels = np.asarray(labels)
     hkl.dump(feats, dbprefix + "_features.hkl", mode="w")
     hkl.dump(labels, dbprefix + "_labels.hkl", mode="w")
-
-def run_alexnet():
-    alexnet = FeatExtractor(
-                model_path="alexnet_deploy.prototxt",
-                pretrained_path="alexnet.caffemodel",
-                blob="fc6",
-                crop_size=227,
-                meanfile_path="imagenet_mean.npy"
-                )
-    create_dataset(net=alexnet, datalist="train.txt", dbprefix="alexnet_train")
-    create_dataset(net=alexnet, datalist="test.txt", dbprefix="alexnet_test")
-
-def run_vgg16_fc7():
-    vgg16 = FeatExtractor(
-            model_path="vgg16_deploy.prototxt",
-            pretrained_path="vgg16.caffemodel",
-            blob="fc7",
-            crop_size=224,
-            mean_values=[103.939, 116.779, 123.68]
-            )
-    create_dataset(net=vgg16, datalist="train.txt", dbprefix="vgg16_fc7_train")
-    create_dataset(net=vgg16, datalist="test.txt", dbprefix="vgg16_fc_7test")
-
-def run_vgg16_fc6():
-    vgg16 = FeatExtractor(
-            model_path="vgg16_deploy.prototxt",
-            pretrained_path="vgg16.caffemodel",
-            blob="fc6",
-            crop_size=224,
-            mean_values=[103.939, 116.779, 123.68]
-            )
-    create_dataset(net=vgg16, datalist="train.txt", dbprefix="vgg16_fc6_train")
-    create_dataset(net=vgg16, datalist="test.txt", dbprefix="vgg16_fc6_test")
-
-def run_googlenet():
-    googlenet = FeatExtractor(
-            model_path="googlenet_deploy.prototxt",
-            pretrained_path="googlenet.caffemodel",
-            blob="pool5/7x7_s1",
-            crop_size=224,
-            mean_values=[104.0, 117.0, 123.0]
-            )
-    create_dataset(net=googlenet, datalist="train.txt", dbprefix="googlenet_train")
-    create_dataset(net=googlenet, datalist="test.txt", dbprefix="googlenet_test")
-
-if __name__ == "__main__":
-    run_alexnet()
-    run_vgg16_fc7()
-    run_vgg16_fc6()
-    run_googlenet()
