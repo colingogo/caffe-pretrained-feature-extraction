@@ -12,7 +12,7 @@ def run_alexnet():
     fe.create_dataset(net=alexnet, datalist="test.txt", dbprefix="alexnet_test")
 
 def run_vgg16_fc7():
-    vgg16 = feCaffeFeatureExtractor(
+    vgg16 = fe.CaffeFeatureExtractor(
             model_path="vgg16_deploy.prototxt",
             pretrained_path="vgg16.caffemodel",
             blob="fc7",

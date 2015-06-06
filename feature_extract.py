@@ -3,7 +3,6 @@
 import numpy as np
 import caffe
 import hickle as hkl
-import cv2
 
 class CaffeFeatureExtractor:
     def __init__(self, model_path, pretrained_path, blob, crop_size, meanfile_path=None, mean_values=None):
