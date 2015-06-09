@@ -32,12 +32,12 @@ class CaffeFeatureExtractor:
         else:
             raise Exception
         # create preprocessor
-        # We expect that input shape is HxWxC, and color order is RGB
-        self.transformer = caffe.io.Transformer({"data": self.net.blobs["data"].data.shape})
-        self.transformer.set_transpose("data", (2,0,1))
-        self.transformer.set_mean("data", self.mean)
-        self.transformer.set_raw_scale("data", 255)
-        self.transformer.set_channel_swap("data", (2,1,0))
+        # Note: caffe.io.load_image() => (H,W,C), RGB, [0.0, 1.0]
+        self.transformer = caffe.io.Transformer({"data": self.net.blobs["data"].data.shape}) # for cropping
+        self.transformer.set_transpose("data", (2,0,1)) # (H,W,C) => (C,H,W)
+        self.transformer.set_mean("data", self.mean) # subtract by mean
+        self.transformer.set_raw_scale("data", 255) # [0.0, 1.0] => [0.0, 255.0].
+        self.transformer.set_channel_swap("data", (2,1,0)) # RGB => BGR
 
     def extract_feature(self, img):
         preprocessed_img = self.transformer.preprocess("data", img)
